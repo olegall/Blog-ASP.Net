@@ -1,0 +1,91 @@
+﻿@model Xm.Trial.Models.BlogViewModel
+
+@{
+    ViewBag.Title = Model.Title;
+}
+
+@foreach (var post in Model.Posts)
+{
+    var detailsUrl = Url.Action("Details", new RouteValueDictionary { ["id"] = post.Id });
+
+    <article class="col-lg-6 col-lg-offset-3 col-md-6 col-md-offset-3 text-center">
+        <header>
+            <h2><a href="@detailsUrl">@post.Title</a></h2>
+            @Html.Partial("PostMeta", post)
+        </header>
+        
+        <a href="@detailsUrl">
+            <figure>
+                <img src="@post.Picture" alt="@post.Title">
+                <figcaption>@post.PictureCaption</figcaption>
+            </figure>
+        </a>
+
+        <p class="post-snippet">@post.Snippet</p>
+    </article>
+}
+
+<script>
+    function getYScroll() {
+        let yScroll = 0;
+        if (typeof (window.pageYOffset) == 'number') {
+            //Netscape compliant
+            yScroll = window.pageYOffset;
+        } else if (document.body && (document.body.scrollLeft || document.body.scrollTop)) {
+            //DOM compliant
+            yScroll = document.body.scrollTop;
+        } else if (document.documentElement && (document.documentElement.scrollLeft || document.documentElement.scrollTop)) {
+            //IE6 standards compliant mode
+            yScroll = document.documentElement.scrollTop;
+        }
+        return yScroll;
+    }
+
+    function getDocHeight() {
+        let d = document;
+        return Math.max(
+            d.body.scrollHeight, d.documentElement.scrollHeight,
+            d.body.offsetHeight, d.documentElement.offsetHeight,
+            d.body.clientHeight, d.documentElement.clientHeight
+        );
+    }
+
+    document.addEventListener("scroll", function (event) {
+        if (getDocHeight() == getYScroll() + window.innerHeight) {
+            let postsOnPage = $('article').length;
+            let url = '/Blog/GetPostsByScroll';
+            let data = {
+                postsOnPage: postsOnPage,
+            };
+            $.ajax({
+                url: url,
+                data: data,
+                success: function (result) {
+                    if (result.posts.length == 0)
+                        return;
+                    putPosts(result.posts);
+                }
+            })
+        }
+    });
+
+    function putPosts(posts) {
+        let detailsPartUrl = '/Blog/Details/';
+        posts.forEach(function (post) {
+            $('article').last().after('<article class="col-lg-6 col-lg-offset-3 col-md-6 col-md-offset-3 text-center">' +
+                                            '<header>' +
+                                                '<h2>' +
+                                                    '<a href="' + detailsPartUrl + post.Id + '">' + post.Title + '</a>' +
+                                                '</h2>' +
+                                            '</header>' +
+                                            '<a href="' + detailsPartUrl + post.Id + '">' +
+                                                '<figure>' +
+                                                    '<img src="' + post.Picture + '" alt="' + post.Title + '">' +
+                                                    '<figcaption>' + post.PictureCaption + '</figcaption>' +
+                                                '</figure>' +
+                                            '</a>' +
+                                            '<p class="post-snippet">' + post.Snippet + '</p>' +
+                                      '</article>');
+        });
+    }
+</script>

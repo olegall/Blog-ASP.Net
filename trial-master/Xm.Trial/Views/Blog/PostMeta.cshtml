@@ -1,0 +1,9 @@
+﻿@model Xm.Trial.Models.IPostViewModel
+
+<section class="post-meta">
+    @if (Model.Author != null)
+            {
+        <address class="author">By <img src="@Model.Author.Avatar"> @Model.Author.Name</address>
+    }
+    <time datetime="@Model.Created.ToString("o")">@Model.Created.ToString("D")</time><br><br>
+</section>

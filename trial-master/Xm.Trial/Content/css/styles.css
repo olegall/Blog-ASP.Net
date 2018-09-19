@@ -1,0 +1,22 @@
+﻿[data-action="like"]:before { display: inline-block; margin-right: 5px; content: 'Like'; }
+
+
+ul {
+    width: 200px;
+}
+
+small {
+    display: block;
+}
+
+figcaption {
+    margin-bottom: 20px;
+}
+
+.post-snippet {
+    margin-bottom: 50px;
+}
+
+.img-details {
+    margin-bottom: 20px;
+}

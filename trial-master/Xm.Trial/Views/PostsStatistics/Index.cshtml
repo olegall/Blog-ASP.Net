@@ -1,0 +1,30 @@
+@model List<Xm.Trial.Models.PostsStatisticsViewModel>
+
+
+@{
+    string controller = "PostsStatistics";
+    string action = "OrderBy";
+}
+
+<h3 class="text-center">Posts statistics</h3>
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col"><a href="@Url.Action(action, controller, new { property = "Title" })">Title</a></th>
+            <th scope="col"><a href="@Url.Action(action, controller, new { property = "Visit" })">Visits</a></th>
+            <th scope="col"><a href="@Url.Action(action, controller, new { property = "Like" })">Likes</a></th>
+            <th scope="col"><a href="@Url.Action(action, controller, new { property = "Referrer" })">Referrers</a></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Title</td>
+                <td>@item.Visit</td>
+                <td>@item.Like</td>
+                <td>@item.Referrer</td>
+            </tr>
+        }
+    </tbody>
+</table>

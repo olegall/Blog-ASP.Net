@@ -1,0 +1,19 @@
+﻿
+<h2 class="text-center">Contact Us</h2>
+<div class="text-center">
+    <textarea rows="10" cols="45" name="text" placeholder="Type your message" class="email-text"></textarea>
+    <br>
+    <input type="submit" value="Send" class="send-email">
+    <br><br>
+</div>
+<script>
+    $('.send-email').click(function () {
+        $.ajax({
+            url: '/ContactUs/SendEmail',
+            data: { messageText: $('.email-text').val() },
+            success: function (result) {
+                $('.send-email').after('<p>' + result.resultMessage + '</p>');
+            }
+        })
+    });
+</script>
